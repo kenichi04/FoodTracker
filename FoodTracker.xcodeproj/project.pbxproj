@@ -14,6 +14,7 @@
 		A416D01D259C595E004ADFC7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A416D01C259C595E004ADFC7 /* Assets.xcassets */; };
 		A416D020259C595E004ADFC7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A416D01E259C595E004ADFC7 /* LaunchScreen.storyboard */; };
 		A416D02B259C595E004ADFC7 /* FoodTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A416D02A259C595E004ADFC7 /* FoodTrackerTests.swift */; };
+		A416D036259CAE7E004ADFC7 /* RatingControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A416D035259CAE7E004ADFC7 /* RatingControl.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +39,7 @@
 		A416D026259C595E004ADFC7 /* FoodTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FoodTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A416D02A259C595E004ADFC7 /* FoodTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTrackerTests.swift; sourceTree = "<group>"; };
 		A416D02C259C595E004ADFC7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A416D035259CAE7E004ADFC7 /* RatingControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingControl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +84,7 @@
 				A416D013259C595D004ADFC7 /* AppDelegate.swift */,
 				A416D015259C595D004ADFC7 /* SceneDelegate.swift */,
 				A416D017259C595D004ADFC7 /* ViewController.swift */,
+				A416D035259CAE7E004ADFC7 /* RatingControl.swift */,
 				A416D019259C595D004ADFC7 /* Main.storyboard */,
 				A416D01C259C595E004ADFC7 /* Assets.xcassets */,
 				A416D01E259C595E004ADFC7 /* LaunchScreen.storyboard */,
@@ -200,6 +203,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A416D036259CAE7E004ADFC7 /* RatingControl.swift in Sources */,
 				A416D018259C595D004ADFC7 /* ViewController.swift in Sources */,
 				A416D014259C595D004ADFC7 /* AppDelegate.swift in Sources */,
 				A416D016259C595D004ADFC7 /* SceneDelegate.swift in Sources */,
