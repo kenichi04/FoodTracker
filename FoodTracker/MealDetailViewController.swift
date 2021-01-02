@@ -8,12 +8,12 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class MealDetailViewController: UIViewController {
     
     // MARK: Properties
     @IBOutlet weak var nameTextField: UITextField!
-    @IBOutlet weak var mealNameLabel: UILabel!
     @IBOutlet weak var photoImageView: UIImageView!
+    @IBOutlet weak var ratingControl: RatingControl!
     
 
     override func viewDidLoad() {
@@ -44,14 +44,11 @@ class ViewController: UIViewController {
         present(imagePickerController, animated: true, completion: nil)
     }
     
-    @IBAction func setDefaultLabelText(_ sender: UIButton) {
-        mealNameLabel.text = "Default Text"
-    }
     
 }
 
 // MARK: UITextFieldDelefate
-extension ViewController: UITextFieldDelegate {
+extension MealDetailViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         // Hide the keyboard.
@@ -61,12 +58,12 @@ extension ViewController: UITextFieldDelegate {
     
     // First Responderが解除された後に呼ばれる
     func textFieldDidEndEditing(_ textField: UITextField) {
-        mealNameLabel.text = textField.text
+        
     }
 }
 
 // MARK: UIImagePickerControllerDelegate+UINavigationControllerDelegate
-extension ViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension MealDetailViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     // 画像選択をキャンセル時に呼ばれる
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         // Dismiss the picker if the user canceled.
