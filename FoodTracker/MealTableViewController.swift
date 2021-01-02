@@ -21,8 +21,13 @@ class MealTableViewController: UITableViewController {
         // Use the edit button item provided by the table view controller.
         navigationItem.leftBarButtonItem = editButtonItem
 
-        // Load sample data.
-        loadSampleMeals()
+        // Load any saved meals, otherwise load sample data.
+        if let savedMeals = loadMeals() {
+            meals += savedMeals
+        } else {
+            // Load sample data.
+            loadSampleMeals()
+        }
     }
 
     // MARK: - Table view data source
@@ -76,6 +81,9 @@ class MealTableViewController: UITableViewController {
         if editingStyle == .delete {
             // Delete the row from the data source
             meals.remove(at: indexPath.row)
+            
+            saveMeals()
+            
             // tableViewにも反映
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
@@ -157,6 +165,8 @@ class MealTableViewController: UITableViewController {
                 // tableViewに行を追加
                 tableView.insertRows(at: [newIndexPath], with: .automatic)
             }
+            // Save the meals.
+            saveMeals()
         }
     }
     
@@ -183,4 +193,32 @@ class MealTableViewController: UITableViewController {
         
         meals += [meal1, meal2, meal3]
     }
+    
+    private func saveMeals() {
+        guard let archivedData = try? NSKeyedArchiver.archivedData(withRootObject: meals, requiringSecureCoding: false) else {
+            fatalError("Unable to archive meals")
+        }
+        // アーカイブしたデータをファイルに保存し、結果に対してログ出力
+        do {
+            try archivedData.write(to: Meal.ArchiveURL)
+            os_log("Meals successfully saves.", log: OSLog.default, type: .debug)
+        } catch {
+            os_log("Faild to save meals...", log:OSLog.default, type: .error)
+        }
+    }
+    
+    private func loadMeals() -> [Meal]? {
+        
+        do {
+            let data = try Data.init(contentsOf: Meal.ArchiveURL)
+            if let loadedData = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? [Meal] {
+                os_log("Meals successfully loaded.", log: OSLog.default, type: .debug)
+                return loadedData
+            }
+        } catch {
+            os_log("Failed to load meals...", log: OSLog.default, type: .error)
+        }
+        return nil
+    }
+    
 }
