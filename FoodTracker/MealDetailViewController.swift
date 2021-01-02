@@ -36,6 +36,10 @@ class MealDetailViewController: UIViewController {
 
 
     // MARK: Navigarion
+    @IBAction func cancel(_ sender: UIBarButtonItem) {
+        // モーダルを閉じる,prapare(for:sender:)は呼ばれない
+        dismiss(animated: true, completion: nil)
+    }
     
     // This method lets you configure a view controller before it's presented.
     // segue実行時に呼ばれる
