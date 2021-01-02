@@ -103,6 +103,20 @@ class MealTableViewController: UITableViewController {
     }
     */
 
+    // MARK: Actions
+    @IBAction func unwindToMealList(sender: UIStoryboardSegue) {
+        // segueのsourceプロパティは遷移元のViewControllerを指す
+        if let sourceViewController = sender.source as? MealDetailViewController, let meal = sourceViewController.meal {
+            // Add a new meal.
+            // 新しいデータをtableViewに挿入する場所（rowは0からmeals.count-1まで存在するため、末尾を指定）
+            let newIndexPath = IndexPath(row: meals.count, section: 0)
+            
+            // 配列に追加
+            meals.append(meal)
+            // tableViewに行を追加
+            tableView.insertRows(at: [newIndexPath], with: .automatic)
+        }
+    }
     
     // MARK: Private Methods
     
