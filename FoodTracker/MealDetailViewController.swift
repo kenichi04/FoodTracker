@@ -30,6 +30,16 @@ class MealDetailViewController: UIViewController {
         // Handle the text field's user input through delegate callbacks.
         nameTextField.delegate = self
         
+        // 編集時には、遷移元のmealTableViewControllerで選択されたcellのmealが設定されている
+        // 新規作成の場合はmeal==nilのため、無視される
+        // Set up views if editing an existing Meal.
+        if let meal = meal {
+            navigationItem.title = meal.name
+            nameTextField.text = meal.name
+            photoImageView.image = meal.photo
+            ratingControl.rating = meal.rating
+        }
+        
         // Enable the Save button only if the text field has a valid Meal name.
         updateSaveButtonState()
     }
@@ -37,8 +47,22 @@ class MealDetailViewController: UIViewController {
 
     // MARK: Navigarion
     @IBAction func cancel(_ sender: UIBarButtonItem) {
-        // モーダルを閉じる,prapare(for:sender:)は呼ばれない
-        dismiss(animated: true, completion: nil)
+        // Depending on style of presentation (modal or push presentation), this view controller needs to be dismissed in two different ways.
+        // モーダル（新規作成）かプッシュ（編集）で表示されているのか判定するのに使用する定数
+        // presentingViewControllerはオプショナル、nilでない場合はモーダル遷移を表す
+        let isPresentingInAddModalMode = presentingViewController is UINavigationController
+        
+        if isPresentingInAddModalMode {
+            // モーダルを閉じる,prapare(for:sender:)は呼ばれない
+            dismiss(animated: true, completion: nil)
+
+        } else if let owingNavigationController = navigationController {
+            // プッシュの場合
+            owingNavigationController.popViewController(animated: true)
+            
+        } else {
+            fatalError("The MealDetailViewController is not inside a navigation controller.")
+        }
     }
     
     // This method lets you configure a view controller before it's presented.

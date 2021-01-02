@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import os.log
 
 class MealTableViewController: UITableViewController {
     
@@ -93,28 +94,64 @@ class MealTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        super.prepare(for: segue, sender: sender)
+        
+        // segueのidentifierによって、新規追加と編集のケース分け
+        switch segue.identifier ?? "" {
+        case "AddItem":
+            os_log("Adding a new model.", log: .default, type: .debug)
+        case "ShowDetail":
+            // destinationプロパティ:遷移先のviewControllerを取得
+            guard let mealDetailViewController = segue.destination as? MealDetailViewController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            
+            guard let selectedMealCell = sender as? MealTableViewCell else {
+                fatalError("Unexpected sender: \(String(describing: sender))")
+            }
+            
+            guard let indexPath = tableView.indexPath(for: selectedMealCell) else {
+                fatalError("The selected cell is not being displayed by the table")
+            }
+            
+            let selectedMeal = meals[indexPath.row]
+            // 遷移先のviewControllerのmealプロパティに選択したcellのmealオブジェクトを設定する
+            mealDetailViewController.meal = selectedMeal
+        default:
+            fatalError("Unexpected Segue Identifier; \(String(describing: segue.identifier))")
+        }
     }
-    */
+    
 
     // MARK: Actions
     @IBAction func unwindToMealList(sender: UIStoryboardSegue) {
         // segueのsourceプロパティは遷移元のViewControllerを指す
         if let sourceViewController = sender.source as? MealDetailViewController, let meal = sourceViewController.meal {
-            // Add a new meal.
-            // 新しいデータをtableViewに挿入する場所（rowは0からmeals.count-1まで存在するため、末尾を指定）
-            let newIndexPath = IndexPath(row: meals.count, section: 0)
             
-            // 配列に追加
-            meals.append(meal)
-            // tableViewに行を追加
-            tableView.insertRows(at: [newIndexPath], with: .automatic)
+            // 新規作成時はnil、編集時はセルを選択してから遷移しているためnilにはならない
+            if let selectedIndexPath = tableView.indexPathForSelectedRow {
+                // Updata an existing meal.
+                // 遷移元のmealで上書き
+                meals[selectedIndexPath.row] = meal
+                // tableViewの表示を更新
+                tableView.reloadRows(at: [selectedIndexPath], with: .none)
+                
+                
+            } else {
+                // Add a new meal.
+                // 新しいデータをtableViewに挿入する場所（rowは0からmeals.count-1まで存在するため、末尾を指定）
+                let newIndexPath = IndexPath(row: meals.count, section: 0)
+                
+                // 配列に追加
+                meals.append(meal)
+                // tableViewに行を追加
+                tableView.insertRows(at: [newIndexPath], with: .automatic)
+            }
         }
     }
     
